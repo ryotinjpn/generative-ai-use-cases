@@ -8,6 +8,7 @@ import { RagKnowledgeBaseStack } from './rag-knowledge-base-stack';
 import { GuardrailStack } from './guardrail-stack';
 import { ProcessedStackInput } from './stack-input';
 import { VideoTmpBucketStack } from './video-tmp-bucket-stack';
+import { BudgetsAlarmStack } from './budgets-alarm-stack';
 
 class DeletionPolicySetter implements cdk.IAspect {
   constructor(private readonly policy: cdk.RemovalPolicy) {}
@@ -158,6 +159,13 @@ export const createStacks = (app: cdk.App, params: ProcessedStackInput) => {
       )
     : null;
 
+  const budgetsAlarmStack = new BudgetsAlarmStack(app, `BudgetsAlarmStack`, {
+    env: {
+      account: params.account,
+    },
+    params: params,
+  });
+
   return {
     cloudFrontWafStack,
     ragKnowledgeBaseStack,
@@ -165,5 +173,6 @@ export const createStacks = (app: cdk.App, params: ProcessedStackInput) => {
     guardrail,
     generativeAiUseCasesStack,
     dashboardStack,
+    budgetsAlarmStack,
   };
 };
