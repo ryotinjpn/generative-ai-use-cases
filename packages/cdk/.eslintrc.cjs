@@ -14,8 +14,8 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-namespace': 'off',
     // Detect Japanese strings
-    'i18nhelper/no-jp-string': 'warn',
-    'i18nhelper/no-jp-comment': 'warn',
+    'i18nhelper/no-jp-string': 'off',
+    'i18nhelper/no-jp-comment': 'off',
     // Apply JSX rules
     '@shopify/jsx-no-hardcoded-content': 'warn',
   },
