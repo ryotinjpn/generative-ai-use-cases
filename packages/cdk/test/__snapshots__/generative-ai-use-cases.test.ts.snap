@@ -19259,3 +19259,182 @@ exports[`GenerativeAiUseCases matches the snapshot 6`] = `
   },
 }
 `;
+
+exports[`GenerativeAiUseCases matches the snapshot 7`] = `
+{
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "Budget": {
+      "Properties": {
+        "Budget": {
+          "BudgetLimit": {
+            "Amount": 30,
+            "Unit": "USD",
+          },
+          "BudgetName": "budget-for-generative-ai-use-cases",
+          "BudgetType": "COST",
+          "CostTypes": {
+            "UseBlended": true,
+          },
+          "TimeUnit": "MONTHLY",
+        },
+        "NotificationsWithSubscribers": [
+          {
+            "Notification": {
+              "ComparisonOperator": "GREATER_THAN",
+              "NotificationType": "FORECASTED",
+              "Threshold": 100,
+            },
+            "Subscribers": [
+              {
+                "Address": {
+                  "Ref": "BudgetsTopicE80FA2BB",
+                },
+                "SubscriptionType": "SNS",
+              },
+            ],
+          },
+          {
+            "Notification": {
+              "ComparisonOperator": "GREATER_THAN",
+              "NotificationType": "ACTUAL",
+              "Threshold": 50,
+            },
+            "Subscribers": [
+              {
+                "Address": {
+                  "Ref": "BudgetsTopicE80FA2BB",
+                },
+                "SubscriptionType": "SNS",
+              },
+            ],
+          },
+          {
+            "Notification": {
+              "ComparisonOperator": "GREATER_THAN",
+              "NotificationType": "ACTUAL",
+              "Threshold": 75,
+            },
+            "Subscribers": [
+              {
+                "Address": {
+                  "Ref": "BudgetsTopicE80FA2BB",
+                },
+                "SubscriptionType": "SNS",
+              },
+            ],
+          },
+          {
+            "Notification": {
+              "ComparisonOperator": "GREATER_THAN",
+              "NotificationType": "ACTUAL",
+              "Threshold": 100,
+            },
+            "Subscribers": [
+              {
+                "Address": {
+                  "Ref": "BudgetsTopicE80FA2BB",
+                },
+                "SubscriptionType": "SNS",
+              },
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::Budgets::Budget",
+    },
+    "BudgetsTopicE80FA2BB": {
+      "Properties": {
+        "DisplayName": "notice-budgets",
+        "TopicName": "notice-budgets",
+      },
+      "Type": "AWS::SNS::Topic",
+    },
+    "BudgetsTopicPolicy5F8FAF39": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sns:Publish",
+              "Condition": {
+                "StringEquals": {
+                  "AWS:SourceAccount": "123456890123",
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": {
+                "Ref": "BudgetsTopicE80FA2BB",
+              },
+              "Sid": "BudgetsSNSPolicy",
+            },
+            {
+              "Action": "sns:Publish",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "budgets.amazonaws.com",
+              },
+              "Resource": {
+                "Ref": "BudgetsTopicE80FA2BB",
+              },
+              "Sid": "AWSBudgetsNotificationPolicy",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Topics": [
+          {
+            "Ref": "BudgetsTopicE80FA2BB",
+          },
+        ],
+      },
+      "Type": "AWS::SNS::TopicPolicy",
+    },
+    "BudgetsTopicryotinjpngmailcomE6382059": {
+      "Properties": {
+        "Endpoint": "ryotinjpn@gmail.com",
+        "Protocol": "email",
+        "TopicArn": {
+          "Ref": "BudgetsTopicE80FA2BB",
+        },
+      },
+      "Type": "AWS::SNS::Subscription",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;

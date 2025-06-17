@@ -70,6 +70,7 @@ describe('GenerativeAiUseCases', () => {
       guardrail,
       generativeAiUseCasesStack,
       dashboardStack,
+      budgetsAlarmStack,
     } = createStacks(app, params);
 
     // Create Templates
@@ -91,6 +92,7 @@ describe('GenerativeAiUseCases', () => {
       generativeAiUseCasesStack
     );
     const dashboardTemplate = Template.fromStack(dashboardStack);
+    const budgetsAlarmTemplate = Template.fromStack(budgetsAlarmStack);
 
     // Assert
     expect(cloudFrontWafTemplate.toJSON()).toMatchSnapshot();
@@ -99,5 +101,6 @@ describe('GenerativeAiUseCases', () => {
     expect(guardrailTemplate.toJSON()).toMatchSnapshot();
     expect(generativeAiUseCasesTemplate.toJSON()).toMatchSnapshot();
     expect(dashboardTemplate.toJSON()).toMatchSnapshot();
+    expect(budgetsAlarmTemplate.toJSON()).toMatchSnapshot();
   });
 });
