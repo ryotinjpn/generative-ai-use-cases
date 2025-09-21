@@ -1164,7 +1164,7 @@ exports[`GenerativeAiUseCases matches the snapshot (closed network mode) 1`] = `
             ],
             "Essential": true,
             "Image": {
-              "Fn::Sub": "123456890123.dkr.ecr.us-east-1.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-123456890123-us-east-1:f42c9250931c270e4dbe045bdf1556d0f4363901fa75fc81605cf456a556646a",
+              "Fn::Sub": "123456890123.dkr.ecr.us-east-1.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-123456890123-us-east-1:7d3e90e6ac507e45ae83aec1256d9f6190a962a8dfaf1b1710c3f938fa8e2029",
             },
             "LogConfiguration": {
               "LogDriver": "awslogs",
@@ -23702,6 +23702,185 @@ exports[`GenerativeAiUseCases matches the snapshot (closed network mode) 7`] = `
 }
 `;
 
+exports[`GenerativeAiUseCases matches the snapshot (closed network mode) 8`] = `
+{
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "Budget": {
+      "Properties": {
+        "Budget": {
+          "BudgetLimit": {
+            "Amount": 30,
+            "Unit": "USD",
+          },
+          "BudgetName": "budget-for-generative-ai-use-cases",
+          "BudgetType": "COST",
+          "CostTypes": {
+            "UseBlended": true,
+          },
+          "TimeUnit": "MONTHLY",
+        },
+        "NotificationsWithSubscribers": [
+          {
+            "Notification": {
+              "ComparisonOperator": "GREATER_THAN",
+              "NotificationType": "FORECASTED",
+              "Threshold": 100,
+            },
+            "Subscribers": [
+              {
+                "Address": {
+                  "Ref": "BudgetsTopicE80FA2BB",
+                },
+                "SubscriptionType": "SNS",
+              },
+            ],
+          },
+          {
+            "Notification": {
+              "ComparisonOperator": "GREATER_THAN",
+              "NotificationType": "ACTUAL",
+              "Threshold": 50,
+            },
+            "Subscribers": [
+              {
+                "Address": {
+                  "Ref": "BudgetsTopicE80FA2BB",
+                },
+                "SubscriptionType": "SNS",
+              },
+            ],
+          },
+          {
+            "Notification": {
+              "ComparisonOperator": "GREATER_THAN",
+              "NotificationType": "ACTUAL",
+              "Threshold": 75,
+            },
+            "Subscribers": [
+              {
+                "Address": {
+                  "Ref": "BudgetsTopicE80FA2BB",
+                },
+                "SubscriptionType": "SNS",
+              },
+            ],
+          },
+          {
+            "Notification": {
+              "ComparisonOperator": "GREATER_THAN",
+              "NotificationType": "ACTUAL",
+              "Threshold": 100,
+            },
+            "Subscribers": [
+              {
+                "Address": {
+                  "Ref": "BudgetsTopicE80FA2BB",
+                },
+                "SubscriptionType": "SNS",
+              },
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::Budgets::Budget",
+    },
+    "BudgetsTopicE80FA2BB": {
+      "Properties": {
+        "DisplayName": "notice-budgets",
+        "TopicName": "notice-budgets",
+      },
+      "Type": "AWS::SNS::Topic",
+    },
+    "BudgetsTopicPolicy5F8FAF39": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sns:Publish",
+              "Condition": {
+                "StringEquals": {
+                  "AWS:SourceAccount": "123456890123",
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": {
+                "Ref": "BudgetsTopicE80FA2BB",
+              },
+              "Sid": "BudgetsSNSPolicy",
+            },
+            {
+              "Action": "sns:Publish",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "budgets.amazonaws.com",
+              },
+              "Resource": {
+                "Ref": "BudgetsTopicE80FA2BB",
+              },
+              "Sid": "AWSBudgetsNotificationPolicy",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Topics": [
+          {
+            "Ref": "BudgetsTopicE80FA2BB",
+          },
+        ],
+      },
+      "Type": "AWS::SNS::TopicPolicy",
+    },
+    "BudgetsTopicryotinjpngmailcomE6382059": {
+      "Properties": {
+        "Endpoint": "ryotinjpn@gmail.com",
+        "Protocol": "email",
+        "TopicArn": {
+          "Ref": "BudgetsTopicE80FA2BB",
+        },
+      },
+      "Type": "AWS::SNS::Subscription",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;
+
 exports[`GenerativeAiUseCases matches the snapshot 1`] = `
 {
   "Outputs": {
@@ -44303,7 +44482,7 @@ exports[`GenerativeAiUseCases matches the snapshot 7`] = `
 }
 `;
 
-exports[`GenerativeAiUseCases matches the snapshot 7`] = `
+exports[`GenerativeAiUseCases matches the snapshot 8`] = `
 {
   "Parameters": {
     "BootstrapVersion": {
